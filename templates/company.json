@@ -1,0 +1,28 @@
+{
+ "_help": "Company settings for scripts/build_sync.py and compare_tb.py. Fill in during step 05. Sage names must match the Sage export exactly. Codes are IsaFlow account codes. Leave lists empty if unused.",
+ "company": {"name": "<COMPANY NAME>", "short_name": "<short>", "isaflow_company_id": ""},
+ "ids": {"accounts": "account_ids.json", "customers": "customer_ids.json", "suppliers": "supplier_ids.json"},
+ "sage": {
+  "bank_accounts": {"<Sage bank account name>": "1110"},
+  "transfer_account": "Bank Transfer Account",
+  "ar_control": "Trade Receivables",
+  "ap_control": "Trade Payables",
+  "vat_accounts": ["VAT Payable"],
+  "forex_accounts": ["Forex Realised Gains/Losses", "Forex Unrealised Gains/Losses"]
+ },
+ "isaflow_codes": {
+  "suspense": "1190", "sales": "4100", "forex": "6110", "vat_control": "1175",
+  "customer_clearing": "4980", "supplier_clearing": "5980", "interbank": "1150"
+ },
+ "party_fixes": {
+  "prefix": {},
+  "exact": {},
+  "supplier_exact": {},
+  "supplier_strip_prefixes": [],
+  "supplier_strip_trailing_dot": false
+ },
+ "line_overrides": [],
+ "tb_names": {"Trade Receivables": "1120", "Trade Payables": "2110", "Retained Income": "RE"},
+ "vat_group_codes": ["1140", "2120", "1175"],
+ "account_map": {"<Sage account name>": "<IsaFlow code>"}
+}

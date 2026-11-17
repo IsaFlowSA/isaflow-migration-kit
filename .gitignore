@@ -1,0 +1,16 @@
+# This kit holds no company data. Block anything that looks like it.
+*.csv
+*.pdf
+*.xlsx
+*.xls
+*.jpg
+*.jpeg
+*.png
+bank.json
+out/
+data/
+outputs/
+.env
+.mcp.json
+__pycache__/
+*.pyc
