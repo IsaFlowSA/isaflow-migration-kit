@@ -11,6 +11,16 @@
 - **This kit** on your computer: `git clone https://github.com/IsaFlowSA/isaflow-migration-kit`
   (or download the ZIP from GitHub and unzip it).
 
+## Get IsaFlow access first
+
+The agent works inside IsaFlow, so you need an IsaFlow login before step 03:
+
+- **Migrating your own company:** register at https://app.isaflow.co.za/register (free trial; plans at
+  https://app.isaflow.co.za/pricing). The onboarding wizard creates the company — step 03 walks you through it.
+- **Migrating a company for someone else** (e.g. as their accountant): the company's IsaFlow account owner gives
+  you access to their company, or registers it and lets you sign in to connect the agent. Never ask for or share
+  their password — each person signs in themselves.
+
 ## How to start
 
 1. Decide where company folders live, e.g. `D:\Clients`. Each company gets its own folder there.

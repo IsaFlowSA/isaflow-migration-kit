@@ -2,6 +2,8 @@
 
 **Goal:** the company exists in IsaFlow, the agent's MCP connection points at it, and its id is recorded.
 
+0. The person needs an IsaFlow login. If they don't have one, they register at
+   https://app.isaflow.co.za/register (free trial) — they do this themselves; never create accounts for them.
 1. Check whether the IsaFlow MCP has a tool that creates companies. If not, the person uses the IsaFlow app's
    onboarding wizard. Give them every field from the company's `AGENTS.md` (name, registration, VAT, income tax,
    year-end, addresses, directors). If you can drive their browser and they are signed in, you may fill the wizard,
