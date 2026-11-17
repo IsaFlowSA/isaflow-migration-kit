@@ -19,3 +19,10 @@ own folder, never here.
 
 The method was proven on a 32-month rebuild (Mar 2024 → Oct 2026): IsaFlow's trial balance equals Sage's per
 account, customer and supplier ledgers reconcile, residual R0.00.
+
+## Contributing
+Issues and pull requests are welcome. Never include real company data (documents, exports, IDs, figures) — use
+synthetic examples like `tests/test_selftest.py`.
+
+## Licence
+MIT — see [`LICENSE`](LICENSE).

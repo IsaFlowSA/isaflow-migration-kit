@@ -1,44 +1,55 @@
-# Pitfalls — learned on earlier migrations
+# Working notes — how IsaFlow and Sage behave during a migration
 
-**Allocation ≠ application.** Allocating a bank line to a supplier posts Dr creditors / Cr bank but applies to no
-bill, so the aged creditors don't move. Apply it to the bill (FIFO) as a separate step. Same for receipts.
+Read before step 05. Each note says how the system works and what to do about it.
 
-**Bulk allocation is all-or-nothing on a real fault** (max ~500 per call, supports dry run, skips lines already
-allocated). One bad line rolls back the whole batch. **Zero-amount lines roll back the batch** — filter R0.00 out.
+## IsaFlow
 
-**Keep every batch id.** Bulk allocations and imports can be undone by batch id; without it, it's line by line.
+**Allocating and applying are separate steps.** Allocating a bank line to a supplier posts Dr creditors / Cr bank
+and leaves the payment on account. Applying it to a bill (oldest first) is what moves the aged creditors. The same
+holds for customer receipts.
 
-**Bank import de-duplication ignores the running balance across imports.** Two genuine identical lines (same
-date, amount, description) in different imports: the second is dropped. `build_sync.py` adds a unique reference
-to every description to prevent this.
+**Bulk allocation is all-or-nothing.** It takes up to ~500 lines per call, supports a dry run and skips lines already
+allocated. If one line fails validation, the whole batch rolls back, so nothing is half-posted. Filter out R0.00
+lines first, and on a refusal isolate the line and carry on.
 
-**Refunds need cash on account at the refund date.** A supplier refund (money in) or customer refund (money out)
-is refused if there is no unapplied cash at that date; credit notes don't count. Fix by re-application (unapply an
-earlier payment → apply the credit note → re-apply) — no journals. Run refunds last, one at a time.
+**Every bulk import and allocation returns a batch id.** Keep it: a batch can be reversed in one call.
 
-**A refund dated before its payment** can't be recorded in IsaFlow. Book both lines to suspense (net R0.00) and say so.
+**Bank imports de-duplicate on date, amount and description.** Two genuine identical lines in different imports
+look like a duplicate. `build_sync.py` adds a unique reference to every description so each line is distinct.
 
-**Reconciled bank lines can't be reversed.** To fix a line inside a completed reconciliation, post a correcting
-journal; don't reopen and reverse.
+**A refund needs cash on account at its date.** A supplier refund (money in) or customer refund (money out) is
+matched against unapplied cash at that date; credit notes are not cash. If there isn't any, re-apply: unapply an
+earlier payment → apply the credit note → re-apply the payment. No journals needed. Process refunds last, one at a time.
 
-**A bank reconciliation claims every unreconciled line up to its statement date.** Reconcile statements in date
+**A refund dated before its payment** can't be matched. Book both lines to suspense (net R0.00) and note it.
+
+**Reconciled bank lines are locked.** To correct a line inside a completed reconciliation, post a correcting
+journal rather than reopening the reconciliation.
+
+**A bank reconciliation takes every unreconciled line up to its statement date.** Reconcile statements in date
 order, oldest first.
 
-**VAT cents.** IsaFlow computes credit-note VAT on the total; other systems often per line. Split documents so the
-VAT hits the source figure to the cent. Supplier bills round VAT per line.
+**VAT on credit notes is calculated on the total; on supplier bills, per line.** If the source system rounded
+differently, split the document so the VAT matches the source to the cent.
 
-**Reverse journal = contra.** The original stays "posted" and flagged. Reversals are for genuine errors only.
+**Reversing a journal posts a contra entry.** The original stays posted and is marked reversed. Use reversals only
+for genuine errors.
 
-**Sage forex.** Sage can post realised forex one-sided (no debtor leg) and revalue the debtors control with no
-customer. Expect a control-account difference in Sage itself; don't copy Sage's error into IsaFlow — pair the
-forex with the customer and explain the difference.
+**One login can hold several companies.** Always confirm the company (`list_companies` / `company_profile`) before
+posting.
 
-**Sage's year-end edits.** Sage figures change after the fact (late journals, revaluations). Management packs and
-earlier exports are point-in-time; IsaFlow should equal Sage **as it stands now**, and back-dated edits are picked
-up by the monthly sync.
+## Sage One
 
-**Large tool results** may be written to a file instead of returned; parse them with a script.
+**Forex.** Sage can post realised forex without the debtor leg and revalue the debtors control without naming a
+customer, so Sage's own control account may not match its customer ledger. In IsaFlow, pair the forex with the
+customer and record the difference against Sage in writing.
 
-**Search tools can return nothing spuriously** on a narrow date window — widen the window or filter by account.
+**Figures change after the fact.** Late journals and revaluations change earlier periods. Management packs and
+earlier exports are point-in-time; IsaFlow should equal Sage as it stands now, and the monthly sync picks up
+back-dated edits.
 
-**One IsaFlow login, several companies.** Always confirm the company before posting.
+## Agent tools
+
+**Large tool results** may be written to a file rather than returned; parse them with a script.
+
+**Searches on a very narrow date window** can come back empty; widen the window or filter by account.
