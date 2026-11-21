@@ -14,7 +14,15 @@
 4. **Intercompany:** balances with other group companies agree to their books (read only).
 5. **External targets** where available: loan statements, signed AFS, management packs.
 6. **Bank reconciliations** against real bank statements only. If statements are not in yet, say so and leave the
-   reconciliation open — never reconcile to Sage's balance.
+   reconciliation open — never reconcile to Sage's balance. Read each statement PDF and type its closing balance
+   into `data/statements.csv` (template `templates/statements.csv`), then
+   ```
+   python -I scripts/bank_rec_prep.py --config data/company.json --bank <work>/bank.json
+          --statements data/statements.csv --out <work>/recs
+   ```
+   It checks each statement against the imported lines and writes one `perform_bank_reconciliation` call per
+   statement (dry run), oldest first. Fix any difference before reconciling; then send each call with
+   `dry_run` removed and `complete: true`.
 7. Write `outputs/<short>-migration-<date>.md`: what was posted (counts, batch ids, keys), every difference and
    its explanation, the residual in rand and cents, open items. Update the brief and the register.
 
