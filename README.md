@@ -10,9 +10,9 @@ any agent that can read files, run Python and use MCP. Balanced to the cent, wit
 | `START_HERE.md` | For the person: what you need, how to start, the prompt to paste |
 | `AGENTS.md` | For the agent: hard rules and how to work (read automatically by most agents) |
 | `playbook/` | The steps, 01 folder → 07 monthly sync, plus `pitfalls.md` |
-| `scripts/` | `scaffold.py` (folder), `parse_bank.py`, `build_sync.py`, `compare_tb.py`, `sage_gl_export.js` |
-| `templates/` | Company brief, document register, `company.json` settings, MCP setup per agent |
-| `tests/` | Synthetic self-test — no real data |
+| `scripts/` | `scaffold.py` (folder), `sage_gl_export.js` + `parse_bank.py` (exports), `map_accounts.py` (chart mapping), `takeon.py` (opening balances), `build_sync.py` (transactions), `prepare_posting.py` (ready-to-send IsaFlow calls), `compare_tb.py` + `bank_rec_prep.py` (proof) |
+| `templates/` | Company brief, document register, `company.json` settings, `statements.csv`, MCP setup per agent |
+| `tests/` | Synthetic self-test — no real data. Runs on every push (GitHub Actions, Linux + Windows) |
 
 This repository holds **no company data**. Company documents, exports, IDs and write-ups live in each company's
 own folder, never here.

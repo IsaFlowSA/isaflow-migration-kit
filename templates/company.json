@@ -1,5 +1,5 @@
 {
- "_help": "Company settings for scripts/build_sync.py and compare_tb.py. Fill in during step 05. Sage names must match the Sage export exactly. Codes are IsaFlow account codes. Leave lists empty if unused.",
+ "_help": "Company settings for every script in scripts/. Fill in during step 05. Sage names must match the Sage export exactly. Codes are IsaFlow account codes. Leave lists empty if unused.",
  "company": {"name": "<COMPANY NAME>", "short_name": "<short>", "isaflow_company_id": ""},
  "ids": {"accounts": "account_ids.json", "customers": "customer_ids.json", "suppliers": "supplier_ids.json"},
  "sage": {
@@ -12,7 +12,12 @@
  },
  "isaflow_codes": {
   "suspense": "1190", "sales": "4100", "forex": "6110", "vat_control": "1175",
-  "customer_clearing": "4980", "supplier_clearing": "5980", "interbank": "1150"
+  "customer_clearing": "4980", "supplier_clearing": "5980", "interbank": "1150",
+  "retained_earnings": ""
+ },
+ "takeon": {
+  "_help": "Only for an opening (take-on) balance, scripts/takeon.py. Clearing accounts: customer one is a revenue account, supplier one an expense account; both end at R0.00. Codes starting with these prefixes are balance sheet; the rest roll into retained_earnings.",
+  "customer_clearing": "4990", "supplier_clearing": "5990", "balance_sheet_code_prefixes": ["1", "2", "3"]
  },
  "party_fixes": {
   "prefix": {},
